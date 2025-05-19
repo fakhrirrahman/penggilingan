@@ -1,6 +1,5 @@
 // src/components/ServicesSection.jsx
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import { motion } from "framer-motion";
 
 const cardVariants = {
@@ -8,28 +7,30 @@ const cardVariants = {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
+// Data statis
+const dummyServices = [
+    {
+        id: 1,
+        nama: "Penggilingan Gabah",
+        deskripsi: "Layanan penggilingan gabah menjadi beras berkualitas.",
+        gambar: "/images/gambar1.jpg",
+    },
+    {
+        id: 2,
+        nama: "Penyimpanan Hasil Panen",
+        deskripsi: "Tempat penyimpanan hasil panen yang aman dan bersih.",
+        gambar: "/images/gambar1.jpg",
+    },
+    {
+        id: 3,
+        nama: "Distribusi dan Pengiriman",
+        deskripsi:
+            "Distribusi beras ke berbagai daerah dengan armada terpercaya.",
+        gambar: "/images/gambar1.jpg",
+    },
+];
+
 export default function ServicesSection() {
-    const [services, setServices] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        axios
-            .get("http://localhost:8000/api/layanan")
-            .then((res) => {
-                setServices(res.data.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error("Gagal fetch data:", err);
-                setError("Gagal memuat layanan.");
-                setLoading(false);
-            });
-    }, []);
-
-    if (loading) return <p className="text-center py-8">Loading layanan...</p>;
-    if (error) return <p className="text-center text-red-500 py-8">{error}</p>;
-
     return (
         <section id="layanan" className="py-16 bg-gray-50">
             <div className="max-w-6xl mx-auto px-4">
@@ -37,7 +38,7 @@ export default function ServicesSection() {
                     Layanan Kami
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {services.map((svc, i) => (
+                    {dummyServices.map((svc, i) => (
                         <motion.div
                             key={svc.id}
                             className="bg-white rounded-2xl shadow-md p-6 text-center"
@@ -46,7 +47,7 @@ export default function ServicesSection() {
                             animate="visible"
                         >
                             <img
-                                src={`http://localhost:8000/${svc.gambar}`}
+                                src={svc.gambar}
                                 alt={svc.nama}
                                 className="mx-auto mb-4 w-32 h-32 object-cover rounded-lg shadow"
                             />
