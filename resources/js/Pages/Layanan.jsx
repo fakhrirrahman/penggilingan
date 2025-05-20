@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import ServicesSection from "@/Sections/Admin/Services/Index";
 
-export default function Index({ services }) {
+export default function Layanan({ services }) {
     return (
         <AuthenticatedLayout
             header={

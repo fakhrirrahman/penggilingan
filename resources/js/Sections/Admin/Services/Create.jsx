@@ -5,22 +5,26 @@ export default function CreateLayanan() {
     const [form, setForm] = useState({
         title: "",
         description: "",
-        image: "",
+        image: null, // harus null (bukan string)
     });
 
-    // Handle input change
     function handleChange(e) {
+        const { name, value, type, files } = e.target;
         setForm({
             ...form,
-            [e.target.name]: e.target.value,
+            [name]: type === "file" ? files[0] : value,
         });
     }
 
-    // Handle form submit
     function handleSubmit(e) {
         e.preventDefault();
-        // Kirim data ke backend via Inertia post route (contoh /layanan)
-        router.post("/layanan", form);
+
+        const formData = new FormData();
+        formData.append("title", form.title);
+        formData.append("description", form.description);
+        formData.append("image", form.image);
+
+        router.post("/service/store", formData);
     }
 
     return (
@@ -53,16 +57,13 @@ export default function CreateLayanan() {
                 </div>
 
                 <div>
-                    <label className="block font-medium mb-1">
-                        Nama File Gambar (contoh: gambar1.jpg)
-                    </label>
+                    <label className="block font-medium mb-1">Gambar</label>
                     <input
-                        type="text"
+                        type="file"
                         name="image"
-                        value={form.image}
                         onChange={handleChange}
-                        placeholder="images/gambar1.jpg"
                         className="w-full border rounded px-3 py-2"
+                        required
                     />
                 </div>
 

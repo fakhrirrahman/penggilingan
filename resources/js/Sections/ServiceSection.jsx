@@ -7,6 +7,10 @@ const cardVariants = {
 };
 
 export default function ServicesSection({ services }) {
+    const hasServices = Array.isArray(services) && services.length > 0;
+
+    console.log("SERVICES:", services); // DEBUG CEK DI SINI
+
     return (
         <section id="layanan" className="py-16 bg-gray-50">
             <div className="max-w-6xl mx-auto px-4">
@@ -14,7 +18,7 @@ export default function ServicesSection({ services }) {
                     Layanan Kami
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {services.length === 0 ? (
+                    {!hasServices ? (
                         <p className="text-center col-span-3">
                             Tidak ada layanan.
                         </p>
@@ -30,7 +34,13 @@ export default function ServicesSection({ services }) {
                                 <img
                                     src={
                                         svc.image
-                                            ? `/storage/${svc.image}`
+                                            ? svc.image.startsWith("http")
+                                                ? svc.image
+                                                : svc.image.startsWith(
+                                                      "images/"
+                                                  )
+                                                ? `/${svc.image}` // sudah lengkap path, tambahkan slash
+                                                : `/images/${svc.image}` // hanya nama file, tambahkan folder
                                             : "/images/default.jpg"
                                     }
                                     alt={svc.title}

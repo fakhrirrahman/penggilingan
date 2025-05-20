@@ -9,14 +9,15 @@ import VisionSection from "@/Sections/VisionSection";
 import TestimonialsSection from "@/Sections/TestimonialsSection";
 import ContactSection from "@/Sections/ContacSection";
 
-export default function Home() {
+export default function Home({ services }) {
+    console.log("PAGE SERVICES:", services); // DEBUG CEK DI SINI
     return (
         <>
             <Head title="Home" />
             <Navbar />
             <HeroSection />
             <StatsSection />
-            <ServicesSection />
+            <ServicesSection services={services} />
             <EducationSection />
             <VisionSection />
             <TestimonialsSection />
