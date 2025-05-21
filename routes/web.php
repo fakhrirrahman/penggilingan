@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/service', [ServiceController::class, 'index'])->name('service.index');
     Route::get('/service/create', [ServiceController::class, 'create'])->name('service.create');
     Route::post('/service/store', [ServiceController::class, 'store'])->name('service.store');
+    Route::delete('/service/{id}', [ServiceController::class, 'destroy'])->name('service.destroy');
+
 });
 
 require __DIR__.'/auth.php';

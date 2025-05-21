@@ -48,4 +48,15 @@ class ServiceController extends Controller
     }
 
 
+    public function destroy($id)
+    {
+        $service = Service::findOrFail($id);
+        if ($service->image) {
+            unlink(public_path($service->image));
+        }
+        $service->delete();
+        return to_route('service.index')->with('success', 'Layanan berhasil dihapus.');
+    }
+
+
 }

@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import { Inertia } from "@inertiajs/inertia";
 import AddButton from "@/Components/AddButton";
 
-export default function ServicesTable({ services }) {
+export default function ServicesTable({ services: initialServices }) {
+    const [services, setServices] = useState(initialServices || []);
+
+    const deletePost = async (id) => {
+        if (confirm("Yakin ingin menghapus layanan ini?")) {
+            Inertia.delete(`/service/${id}`);
+            // Jika mau update state supaya hilang tanpa reload, bisa lakukan filter:
+            setServices(services.filter((svc) => svc.id !== id));
+        }
+    };
+
     return (
         <section id="layanan" className="py-16 bg-gray-50">
             <div className="max-w-6xl mx-auto px-4">
@@ -9,14 +20,13 @@ export default function ServicesTable({ services }) {
                     Layanan Kami
                 </h2>
 
-                {/* Tombol Tambah */}
                 <div className="text-right mb-6">
                     <AddButton href={route("service.create")}>
                         + Tambah Layanan
                     </AddButton>
                 </div>
 
-                {services?.length > 0 ? (
+                {services.length > 0 ? (
                     <div className="overflow-x-auto">
                         <table className="min-w-full bg-white rounded-lg shadow-md">
                             <thead>
@@ -37,8 +47,6 @@ export default function ServicesTable({ services }) {
                             </thead>
                             <tbody>
                                 {services.map((svc) => {
-                                    console.log("SERVICE IMAGE:", svc.image);
-
                                     const imageUrl = svc.image
                                         ? svc.image.startsWith("http")
                                             ? svc.image
@@ -67,13 +75,24 @@ export default function ServicesTable({ services }) {
                                             <td className="py-3 px-4 text-gray-600 max-w-xs truncate">
                                                 {svc.description}
                                             </td>
-                                            <td className="py-3 px-4">
+                                            <td className="py-3 px-4 space-x-4">
                                                 <a
-                                                    href="#"
-                                                    className="text-green-600 hover:underline font-medium"
+                                                    // href={route(
+                                                    //     "service.edit",
+                                                    //     svc.id
+                                                    // )}
+                                                    className="text-blue-600 hover:underline font-medium"
                                                 >
-                                                    Selengkapnya
+                                                    Edit
                                                 </a>
+                                                <button
+                                                    onClick={() =>
+                                                        deletePost(svc.id)
+                                                    }
+                                                    className="btn btn-sm btn-danger"
+                                                >
+                                                    DELETE
+                                                </button>
                                             </td>
                                         </tr>
                                     );
